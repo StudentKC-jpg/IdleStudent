@@ -170,9 +170,9 @@ function updateScore() {
 }
 
 // Increase the score when a brick is hit (assuming a collision detection function is already set up)
-function checkBrickCollision(ball, brick) {
-    // Assuming you have code that detects when the ball hits a brick...
-    if (collisionDetected) { // Replace with your collision logic
+function checkBrickCollision(brick) {
+    // Use ballX, ballY instead of ball in the collision logic
+    if (collisionDetected) { // Replace with actual collision logic involving ballX and ballY
         score += 10;  // Increase score by 10 or any number per brick
         updateScore(); // Update score display
         brick.isDestroyed = true; // Example of marking the brick as destroyed
@@ -184,11 +184,13 @@ function gameLoop() {
     // Other game logic...
 
     // Call brick collision check (this is where you handle all bricks)
-    bricks.forEach(brick => checkBrickCollision(ball, brick));
+    bricks.forEach(brick => checkBrickCollision(brick));
 
     // Redraw canvas, update positions, etc.
     requestAnimationFrame(gameLoop);
 }
+
+
 
 // Start the game loop
 gameLoop();
