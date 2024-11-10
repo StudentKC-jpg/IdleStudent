@@ -1,3 +1,13 @@
+body{
+    background-color: teal;
+    font-size: large;
+    font-family: sans-serif;
+    overflow: hidden;
+}
+#header{
+    text-align: center;
+    justify-content: center;
+}
 #Container{
     display: flex;
     flex-direction: column;
@@ -7,6 +17,12 @@
 #pongBoard{
     border: 5px solid;
 }
+#buttons{
+    display: flex;
+    justify-content: center;
+    gap: 500px;
+    margin-top: 20px;
+}
 #resetButton{
     font-family:cursive;
     font-size: 25px;
@@ -15,5 +31,24 @@
     width: 150px;
     height: 100px;
     cursor: pointer;
-    margin-top: 20px;
+    background-color: green;
+}
+
+#pauseButton{
+    font-family:cursive;
+    font-size: 25px;
+    border: 4px dashed;
+    border-radius: 10px;
+    width: 150px;
+    height: 100px;
+    cursor: pointer;
+    background-color: red;
+}
+
+#press{
+    position: absolute;
+    font-size: 20px;
+    top: 725px;
+    right: 400px;
+    font-weight: bold;
 }

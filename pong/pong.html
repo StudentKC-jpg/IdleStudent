@@ -5,11 +5,16 @@
     <title>Pong Game</title>
     <link rel="stylesheet" href="pong.css">
 </head>
-<body style="transform: scale(.8);">
+<body>
+    <h1 id = "header">Pong Game</h1>
     <div id="Container">
         <canvas id = "pongBoard" width ="1200" height ="600"></canvas>
+        <div id = "buttons">
         <button id ="resetButton">NEW GAME</button>
+        <button id ="pauseButton">Pause Game</button>
+        </div>
     </div>
+    <p id = "press">OR Press P</p>
     <script src="pong.js"></script>
 </body>
 </html>

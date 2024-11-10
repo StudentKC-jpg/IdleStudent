@@ -1,13 +1,17 @@
 const pongBoard = document.getElementById("pongBoard");
 const ctx = pongBoard.getContext("2d");
 const resetButton = document.getElementById("resetButton");
+const pauseButton = document.getElementById("pauseButton");
 
 resetButton.addEventListener("click", resetGame);
 document.addEventListener("keydown", keyDownHandler);
 document.addEventListener("keyup", keyUpHandler);
+pauseButton.addEventListener('click',gamePause);
 
 const boardWidth = 1200;
 const boardHeight = 600;
+
+let paused = false; 
 
 let player1Score = 0;
 let player2Score = 0;
@@ -39,6 +43,9 @@ let ball = {
 startGame();
 // starts the game and then updates the game (helps constantly redraw the board, paddle, ball)
 function startGame() {
+    if(paused){
+        return;
+    }
     ctx.fillStyle = "black"; 
     ctx.fillRect(0, 0, boardWidth, boardHeight);
     drawScore();
@@ -76,24 +83,43 @@ function keyUpHandler(e) {
     if (e.key === "ArrowUp" || e.key === "ArrowDown") player2Paddle.dy = 0;
 }
 
+// everytime the pause button is paused, paused is changed from true to false and vice versa. 
+// if pause is false, !pause makes it true, starting the game back up.
+function gamePause() {
+    paused = !paused;
+    if (!paused) {
+        startGame();
+    }
+}
+
+document.addEventListener('keydown', function(e) {
+    if(e.key === 'p' || e.key === 'P'){
+        gamePause();
+    }
+});
+
 // Paddle movement, uses the change of dy to change the speed of the paddle.
 setInterval(() => {
+    if(!paused){
     player1Paddle.y += player1Paddle.dy;
     player2Paddle.y += player2Paddle.dy;
 
     player1Paddle.y = Math.max(0, Math.min(boardHeight - player1Paddle.height, player1Paddle.y));
     player2Paddle.y = Math.max(0, Math.min(boardHeight - player2Paddle.height, player2Paddle.y));
+    }
 }, 1000 / 60);
 
-// draws the ball
+// draws the ball, arc creates a circle
 function drawBall() {
     ctx.beginPath();
+    ctx.fillStyle = "blue";
     ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-    ctx.fillStyle = "white";
     ctx.fill();
     ctx.closePath();
 }
-// reset the ball back into the middle position
+// reset the ball back into the middle position Math.random() returns a random number between 0 and 1 (including 0 but excluding 1). Using a ternary statement, i can return a 1 or -1
+// Math.random() returns a random number between 0 and 1 (including 0 but excluding 1). 
+// Using a ternary statement, i can return a 1 or -1 to change direction for left or right.
 function resetBall() {
     ball.x = boardWidth / 2;
     ball.y = boardHeight / 2;
@@ -101,7 +127,9 @@ function resetBall() {
     ball.dy = 3 * (Math.random() > 0.5 ? 1 : -1);
 }
 // changes the direction of the ball
+
 function moveBall() {
+    if (!paused){
     ball.x += ball.dx;
     ball.y += ball.dy;
     
@@ -126,12 +154,13 @@ function moveBall() {
         player1Score++;
         resetBall();
     }
+    }
 }
 //resets the game
 function resetGame() {
     player1Score = 0;
     player2Score = 0;
-    resetBall(); 
+    resetBall();
 } 
 //draws the stripes going down the center of the board
 function drawCenterLines() {

@@ -5,7 +5,11 @@ body{
     justify-content: center;
     align-items: center;
     font-family: Arial, sans-serif;
-    background-color: black;
+    /* background: linear-gradient(to right, #e0c3fc, #8ec5fc); */
+    /* background: linear-gradient(to right, #6a11cb, #2575fc); */
+    background: radial-gradient(circle, #ff6a00, #ee0979);
+    /* background: linear-gradient(to left, #ff5f6d, #ffc3a0); */
+    z-index: 1;
 }
 
 .container {
@@ -14,6 +18,7 @@ body{
 }
 
 .container div {
+    padding-top: 20px;
     text-align: center;
 }
 
@@ -24,17 +29,18 @@ body{
 
 .gameName {
     margin-top: 8px;
-    font-size: 16px;
+    font-size: 24px;
     color: white;
     font-weight: bold;
 }
 
 .title {
     position: absolute;
-    top: 20px;
+    top: 0;
     text-align: center;
     width: 100%;
     font-size: 100px;
     font-weight: bold;
     color: white;
+    z-index: 10;
 }
