@@ -9,16 +9,18 @@ let paddleX = (canvas.width - paddleWidth) / 2;
 const paddleSpeed = 7;
 
 // Ball properties
-const ballRadius = 10;
-let ballX = canvas.width / 2;
-let ballY = canvas.height - 30;
-let ballSpeedX = 4;
-let ballSpeedY = -4;
+const ball = {
+    x: canvas.width / 2,
+    y: canvas.height - 30,
+    radius: 10,
+    speedX: 4,
+    speedY: -4
+};
 
 // Brick properties
 const brickRowCount = 5;
 const brickColumnCount = 10;
-const brickWidth = 70;
+const brickWidth = Math.floor(canvas.width / brickColumnCount) - 10; // Adjust brick width to fit
 const brickHeight = 20;
 const brickPadding = 10;
 const brickOffsetTop = 30;
@@ -68,7 +70,7 @@ function drawPaddle() {
 // Draw the ball
 function drawBall() {
     ctx.beginPath();
-    ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
+    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
     ctx.fillStyle = 'white';
     ctx.fill();
     ctx.closePath();
@@ -100,13 +102,15 @@ function collisionDetection() {
             const b = bricks[c][r];
             if (b.status === 1) {
                 if (
-                    ballX > b.x &&
-                    ballX < b.x + brickWidth &&
-                    ballY > b.y &&
-                    ballY < b.y + brickHeight
+                    ball.x > b.x &&
+                    ball.x < b.x + brickWidth &&
+                    ball.y > b.y &&
+                    ball.y < b.y + brickHeight
                 ) {
-                    ballSpeedY = -ballSpeedY;
+                    ball.speedY = -ball.speedY;
                     b.status = 0;
+                    score += 10;
+                    updateScore();
                 }
             }
         }
@@ -123,26 +127,26 @@ function updateGame() {
     }
 
     // Move the ball
-    ballX += ballSpeedX;
-    ballY += ballSpeedY;
+    ball.x += ball.speedX;
+    ball.y += ball.speedY;
 
     // Ball collision with walls
-    if (ballX + ballRadius > canvas.width || ballX - ballRadius < 0) {
-        ballSpeedX = -ballSpeedX;
+    if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
+        ball.speedX = -ball.speedX;
     }
-    if (ballY - ballRadius < 0) {
-        ballSpeedY = -ballSpeedY;
-    } else if (ballY + ballRadius > canvas.height) {
+    if (ball.y - ball.radius < 0) {
+        ball.speedY = -ball.speedY;
+    } else if (ball.y + ball.radius > canvas.height) {
         document.location.reload(); // Game over, reload the page
     }
 
     // Ball collision with the paddle
     if (
-        ballY + ballRadius > canvas.height - paddleHeight - 10 &&
-        ballX > paddleX &&
-        ballX < paddleX + paddleWidth
+        ball.y + ball.radius > canvas.height - paddleHeight - 10 &&
+        ball.x > paddleX &&
+        ball.x < paddleX + paddleWidth
     ) {
-        ballSpeedY = -ballSpeedY;
+        ball.speedY = -ball.speedY;
     }
 
     collisionDetection();
@@ -150,55 +154,32 @@ function updateGame() {
 
 // Drawing function
 function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawBricks();
-    drawBall();
-    drawPaddle();
-    updateGame();
-
+    if (!isPaused) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBricks();
+        drawBall();
+        drawPaddle();
+        updateGame();
+    }
     requestAnimationFrame(draw);
 }
-// Select the score display element
-const scoreDisplay = document.getElementById("score");
 
-// Define the score variable
+// Score display and update
+const scoreDisplay = document.getElementById("score");
 let score = 0;
 
-// Function to update the score display
 function updateScore() {
     scoreDisplay.textContent = `Score: ${score}`;
 }
 
-// Increase the score when a brick is hit (assuming a collision detection function is already set up)
-function checkBrickCollision(brick) {
-    // Use ballX, ballY instead of ball in the collision logic
-    if (collisionDetected) { // Replace with actual collision logic involving ballX and ballY
-        score += 10;  // Increase score by 10 or any number per brick
-        updateScore(); // Update score display
-        brick.isDestroyed = true; // Example of marking the brick as destroyed
-    }
-}
+// Pause functionality
+let isPaused = false;
+const pauseButton = document.getElementById('pauseButton');
 
-// Example game loop or function where brick collision checks occur
-function gameLoop() {
-    // Other game logic...
-
-    // Call brick collision check (this is where you handle all bricks)
-    bricks.forEach(brick => checkBrickCollision(brick));
-
-    // Redraw canvas, update positions, etc.
-    requestAnimationFrame(gameLoop);
-}
-
-
-
-// Start the game loop
-gameLoop();
-
+pauseButton.addEventListener('click', () => {
+    isPaused = !isPaused;
+    pauseButton.textContent = isPaused ? "Resume" : "Pause";
+});
 
 // Start the game
 draw();
-
-document.getElementById("gameCanvas").addEventListener("click", e => {
-    console.log(666);  
- });
