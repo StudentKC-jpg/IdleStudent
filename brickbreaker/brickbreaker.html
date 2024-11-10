@@ -1,18 +1,51 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IdleStudent | BrickBreaker</title>
+    <title>Brick Breaker Game</title>
     <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: black;  /* Set background to black */
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            height: 100vh;
+            justify-content: center;
+        }
         canvas {
-            background: blue;
+            background: #333;  /* Dark gray background for the canvas */
             display: block;
             margin: 0 auto;
+            border: 2px solid white;  /* Optional border to highlight canvas */
+        }
+        #score {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        #pauseButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
+    <!-- Game Canvas -->
     <canvas id="gameCanvas" width="800" height="600"></canvas>
+    
+    <!-- Score Display -->
+    <div id="score">Score: 0</div>
+    
+    <!-- Pause Button -->
+    <button id="pauseButton">Pause</button>
+    
+    <!-- JavaScript -->
     <script src="brickbreaker.js"></script>
 </body>
 </html>
