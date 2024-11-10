@@ -24,10 +24,22 @@ hr{
 
     /* center board */
     margin: 0 auto;
+    margin-bottom: 40px;
     
     /* make tiles in board div be inline ie 4 in each row */
     display: flex;
     flex-wrap: wrap;
+}
+
+#HowTo{
+    font-size: 20px;
+}
+
+#instructions{
+    font-size: 25px;
+    position: absolute;
+    
+    left: 35px;
 }
 
 #popUp{

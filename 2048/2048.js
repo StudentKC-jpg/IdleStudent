@@ -215,7 +215,8 @@ document.addEventListener("keyup", move = (e) => {
         slideDown();
         setTwo();
     } else if(e.code == "keyZ"){
-        undo();
+        //!! UNDO not working
+        //undo();
     }
 
     document.getElementById("score").innerText = score;
