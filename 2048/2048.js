@@ -12,19 +12,17 @@
 
 var board;
 var score = 0;
-// !!
 var highscore = localStorage.getItem("highscore") || 0;
 var rows = 4;
 var columns = 4;
 var counter = 0;
 var restart = document.getElementById("restart");
 var popUp = document.getElementById("popUp");
-// !!
-var previousState = [];
+// !! currently not working == UNDO button
+// var previousState = [];
 
 window.onload = function() {
     setGame();
-    // !!
     updateHighscore();
 }
 
@@ -43,6 +41,12 @@ function setGame(){
         // [4, 2, 4, 0]
 
         //test win condition
+        // [1024, 1024, 0, 0],
+        // [0, 0, 0, 0],
+        // [0, 0, 0, 0],
+        // [0, 0, 0, 0]
+
+        // for thumbnail
         // [8192, 4096, 2048, 1024],
         // [512, 256, 128, 64],
         // [32, 16, 8, 4],
@@ -50,8 +54,8 @@ function setGame(){
 
     ];
 
-    // !!
-    previousState = [];
+    
+    //!! previousState = []; UNDO
 
     for(let r = 0; r < rows; r++){
         for(let c = 0; c < columns; c++){
@@ -133,15 +137,16 @@ function updateTile(tile, num){
 
 }
 
-//!! update highscore
+//update highscore
 function updateHighscore(){
     document.getElementById("highscore").innerText = highscore;
 }
 
-// !!
+//!! intended for UNDO currently not working
+/*
 function saveState(){
     previousState.push(JSON.stringify(board));
-}
+}*/
 
 //return true if they are valid moves
 function hasValidMove(){
@@ -164,14 +169,14 @@ function hasValidMove(){
     }
 }
 
-// !! currently not working
-function undo() {
-    if(previousState.length > 0){
-        board = JSON.parse(previousState.pop());
-        score = previousState.length ? JSON.parse(previousState[previousState.length - 1]).score : 0;
-        updateBoard();
-    }
-}
+// !! currently not working UNDO
+// function undo() {
+//     if(previousState.length > 0){
+//         board = JSON.parse(previousState.pop());
+//         score = previousState.length ? JSON.parse(previousState[previousState.length - 1]).score : 0;
+//         updateBoard();
+//     }
+// }
 
 function updateBoard(){
     for(let r = 0; r < rows; r++){
@@ -186,8 +191,8 @@ function updateBoard(){
 
 // keyboard movement 
 document.addEventListener("keyup", move = (e) => {
-    // !! save save before move
-    saveState();
+    // !! save save before move UNDO
+    //saveState();
 
     //game over if no valid moves and no empty tiles
     if(!hasValidMove() && !hasEmptyTile()){
@@ -350,7 +355,6 @@ function restartGame(){
 
 // lost game
 function gameOver(){
-    // !! set highscore
     if(score > highscore){
         highscore = score;
         localStorage.setItem("highscore", highscore);

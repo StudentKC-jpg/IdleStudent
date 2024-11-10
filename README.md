@@ -1,28 +1,27 @@
-# IdleStudent
-Project to create a hub of games for students to play while bored in class
+# **Project: Create a Website that links to minigames games for students to play while bored in class**
 
-[Game](https://github.com/StudentKC-jpg/IdleStudent/blob/main/defaultHomepage/default.html)
+## [Game](https://studentkc-jpg.github.io/IdleStudent/homepage/index.html)
 
-/IdleStudent<br>
-	/homepage<br>  
-		/index.html<br>  
-		/index.css<br>  
-		/index.js<br>  
-	/Pong<br>  
-		/pong.html<br>  
-		/pong.css<br>  
-		/pong.js<br>  
-	/2048<br>
-		/2048.html<br>  
-		/2048.css<br>  
-		/2048.js<br>  
-	/TicTacToe<br>  
-		/tictactoe.html<br>  
-		/tictactoe.css<br>  
-		/tictactoe.js<br>  
-	/Brick-Breaker<br>  
-		/brickbreaker.html<br>  
-		/brickbreaker.js<br>  
+## IdleStudent
+### homepage
+#### index.html
+#### index.css
+#### index.js
+### Pong
+#### pong.html
+#### pong.css
+#### pong.js
+### 2048
+#### 2048.html
+#### 2048.css
+#### 2048.js
+### TicTacToe
+#### tictactoe.html
+#### tictactoe.css
+#### tictactoe.js
+### Brick-Breaker
+#### brickbreaker.html
+#### brickbreaker.js
 
 
 		
