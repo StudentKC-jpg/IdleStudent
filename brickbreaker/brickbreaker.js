@@ -23,7 +23,7 @@ const ball = {
 // Brick properties
 const brickRowCount = 5;
 const brickColumnCount = 10;
-const brickWidth = Math.floor(canvas.width / brickColumnCount) - 10; // Adjust brick width to fit
+const brickWidth = Math.floor(canvas.width / brickColumnCount) - 10;
 const brickHeight = 20;
 const brickPadding = 10;
 const brickOffsetTop = 30;
@@ -40,12 +40,17 @@ function createBricks() {
         }
     }
 }
-createBricks(); // Initialize bricks
+createBricks();
+
+// Score
+let score = 0;
+function updateScore() {
+    document.getElementById('score').innerText = 'Score: ' + score;
+}
 
 // Keyboard controls
 let rightPressed = false;
 let leftPressed = false;
-
 document.addEventListener('keydown', keyDownHandler, false);
 document.addEventListener('keyup', keyUpHandler, false);
 
@@ -65,7 +70,7 @@ function keyUpHandler(e) {
     }
 }
 
-// Draw the paddle
+// Draw functions
 function drawPaddle() {
     ctx.beginPath();
     ctx.rect(paddleX, canvas.height - paddleHeight - 10, paddleWidth, paddleHeight);
@@ -74,7 +79,6 @@ function drawPaddle() {
     ctx.closePath();
 }
 
-// Draw the ball
 function drawBall() {
     ctx.beginPath();
     ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
@@ -83,7 +87,6 @@ function drawBall() {
     ctx.closePath();
 }
 
-// Draw the bricks
 function drawBricks() {
     for (let c = 0; c < brickColumnCount; c++) {
         for (let r = 0; r < brickRowCount; r++) {
@@ -108,12 +111,7 @@ function collisionDetection() {
         for (let r = 0; r < brickRowCount; r++) {
             const b = bricks[c][r];
             if (b.status === 1) {
-                if (
-                    ball.x > b.x &&
-                    ball.x < b.x + brickWidth &&
-                    ball.y > b.y &&
-                    ball.y < b.y + brickHeight
-                ) {
+                if (ball.x > b.x && ball.x < b.x + brickWidth && ball.y > b.y && ball.y < b.y + brickHeight) {
                     ball.speedY = -ball.speedY;
                     b.status = 0;
                     score += 10;
@@ -124,31 +122,50 @@ function collisionDetection() {
     }
 }
 
-// Reset ball position and speed for a new life
-function resetBall() {
+// Reset game function
+function resetGame() {
     ball.x = canvas.width / 2;
     ball.y = canvas.height - 30;
     ball.speedX = initialBallSpeedX;
     ball.speedY = initialBallSpeedY;
+    paddleX = (canvas.width - paddleWidth) / 2;
+    score = 0;
+    updateScore();
+    createBricks();
 }
 
-// Game logic
+// Restart Button event listener
+document.getElementById('restartButton').addEventListener('click', resetGame);
+
+// Game loop
 function updateGame() {
-    // Move the paddle
     if (rightPressed && paddleX < canvas.width - paddleWidth) {
         paddleX += paddleSpeed;
     } else if (leftPressed && paddleX > 0) {
         paddleX -= paddleSpeed;
     }
 
-    // Move the ball
     ball.x += ball.speedX;
     ball.y += ball.speedY;
 
-    // Ball collision with walls
     if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
         ball.speedX = -ball.speedX;
     }
     if (ball.y - ball.radius < 0) {
         ball.speedY = -ball.speedY;
-    } else
+    } else if (ball.y + ball.radius > canvas.height) {
+        resetBall();
+    }
+
+    collisionDetection();
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawPaddle();
+    drawBall();
+    drawBricks();
+
+    requestAnimationFrame(updateGame);
+}
+
+// Start the game loop
+updateGame();
