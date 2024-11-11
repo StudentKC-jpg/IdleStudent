@@ -122,6 +122,14 @@ function collisionDetection() {
     }
 }
 
+// Reset ball
+function resetBall() {
+    ball.x = canvas.width / 2;
+    ball.y = canvas.height - 30;
+    ball.speedX = initialBallSpeedX;
+    ball.speedY = initialBallSpeedY;
+}
+
 // Reset game function
 function resetGame() {
     ball.x = canvas.width / 2;
@@ -137,8 +145,23 @@ function resetGame() {
 // Restart Button event listener
 document.getElementById('restartButton').addEventListener('click', resetGame);
 
+// Pause game functionality
+let isPaused = false;
+document.getElementById('pauseButton').addEventListener('click', () => {
+    isPaused = !isPaused;
+    if (isPaused) {
+        cancelAnimationFrame(requestAnimationFrame(updateGame));
+        document.getElementById('pauseButton').textContent = 'Resume';
+    } else {
+        document.getElementById('pauseButton').textContent = 'Pause';
+        updateGame();  // Resume the game loop
+    }
+});
+
 // Game loop
 function updateGame() {
+    if (isPaused) return; // Pause the game loop if paused
+
     if (rightPressed && paddleX < canvas.width - paddleWidth) {
         paddleX += paddleSpeed;
     } else if (leftPressed && paddleX > 0) {
