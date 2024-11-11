@@ -139,33 +139,44 @@ document.getElementById('restartButton').addEventListener('click', resetGame);
 
 // Game loop
 function updateGame() {
+    // Move the paddle
     if (rightPressed && paddleX < canvas.width - paddleWidth) {
         paddleX += paddleSpeed;
     } else if (leftPressed && paddleX > 0) {
         paddleX -= paddleSpeed;
     }
 
+    // Move the ball
     ball.x += ball.speedX;
     ball.y += ball.speedY;
 
+    // Ball collision with walls
     if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
         ball.speedX = -ball.speedX;
     }
     if (ball.y - ball.radius < 0) {
         ball.speedY = -ball.speedY;
     } else if (ball.y + ball.radius > canvas.height) {
-        resetBall();
+        resetGame(); // Restart game if ball goes below canvas
+    }
+
+    // Ball collision with the paddle
+    if (
+        ball.y + ball.radius >= canvas.height - paddleHeight - 10 && // Check if ball is at paddle height
+        ball.x > paddleX && // Check if ball is within left edge of the paddle
+        ball.x < paddleX + paddleWidth // Check if ball is within right edge of the paddle
+    ) {
+        ball.speedY = -ball.speedY; // Reverse the vertical direction
     }
 
     collisionDetection();
 
+    // Clear and redraw everything
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawPaddle();
     drawBall();
     drawBricks();
 
+    // Continue the game loop
     requestAnimationFrame(updateGame);
 }
-
-// Start the game loop
-updateGame();
