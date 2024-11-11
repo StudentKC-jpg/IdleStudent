@@ -20,10 +20,21 @@ body{
 #buttons{
     display: flex;
     justify-content: center;
-    gap: 500px;
+    gap: 300px;
     margin-top: 20px;
 }
 #resetButton{
+    font-family:cursive;
+    font-size: 25px;
+    border: 4px dashed;
+    border-radius: 10px;
+    width: 150px;
+    height: 100px;
+    cursor: pointer;
+    background-color: yellow;
+}
+
+#startButton{
     font-family:cursive;
     font-size: 25px;
     border: 4px dashed;
@@ -45,25 +56,33 @@ body{
     background-color: red;
 }
 
-#press{
+#Pause{
     position: absolute;
     font-size: 20px;
-    top: 725px;
-    right: 400px;
+    top: 800px;
+    right: 450px;
+    font-weight: bold;
+}
+
+#Enter{
+    position: absolute;
+    font-size: 20px;
+    top: 800px;
+    left: 430px;
     font-weight: bold;
 }
 
 #player1{
     position: absolute;
     font-size: 20px;
-    top: 300px;
+    top: 700px;
     left: 100px;
     font-weight: bold;
 }
 #player2{
     position: absolute;
     font-size: 20px;
-    top: 300px;
+    top: 700px;
     right: 100px;
     font-weight: bold;
 }

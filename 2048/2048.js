@@ -1,6 +1,6 @@
 // todo
 /**  
- * add a winner and continue message when you get your first 2048 tile
+ * in win message how many moves it took you to get 2048
  * an undo button MAYBE
  * score message w/ current score highscore # of moves highest score(based on leaderboards)
  * storage system
@@ -38,7 +38,7 @@ function setGame(){
         // [2, 4, 2, 4],
         // [4, 2, 4, 2],
         // [2, 4, 2, 4],
-        // [4, 2, 4, 0]
+        // [4, 2, 4, 2]
 
         //test win condition
         // [1024, 1024, 0, 0],
@@ -177,6 +177,7 @@ function hasValidMove(){
 //         updateBoard();
 //     }
 // }
+
 
 function updateBoard(){
     for(let r = 0; r < rows; r++){
@@ -371,11 +372,12 @@ function gameOver(){
         updateHighscore();
     });
 
-    // todo endgame display score and highscore in popup
+    // todo endgame display score and highscore in popup MAYBE
     // document.getElementById("score").innerText = score;
     // document.getElementById("highscore").innerText = highscore;
 }
 
+// create 2048
 function winGame(){
     document.getElementById("winner").style.display = "flex"; // Show the pop-up
 }

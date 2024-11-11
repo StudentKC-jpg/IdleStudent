@@ -2,16 +2,19 @@ const pongBoard = document.getElementById("pongBoard");
 const ctx = pongBoard.getContext("2d");
 const resetButton = document.getElementById("resetButton");
 const pauseButton = document.getElementById("pauseButton");
+const startButton = document.getElementById("startButton");
 
 resetButton.addEventListener("click", resetGame);
 document.addEventListener("keydown", keyDownHandler);
 document.addEventListener("keyup", keyUpHandler);
 pauseButton.addEventListener('click',gamePause);
+startButton.addEventListener('click',gameStartfirstTime);
 
 const boardWidth = 1200;
 const boardHeight = 600;
 
 let paused = false; 
+let startGameFlag = false;
 
 let player1Score = 0;
 let player2Score = 0;
@@ -40,7 +43,19 @@ let ball = {
     dy: 3
 };
 
-startGame();
+function gameStartfirstTime() {
+    if(!startGameFlag){
+    startGameFlag = true;
+    startGame();
+    }
+}
+
+document.addEventListener('keydown', function(e) {
+    if(e.key === 'Enter'){
+        gameStartfirstTime();
+    }
+});
+
 // starts the game and then updates the game (helps constantly redraw the board, paddle, ball)
 function startGame() {
     if(paused){
@@ -63,11 +78,25 @@ function drawScore() {
     ctx.textAlign = "center";
     ctx.fillText(`${player1Score}     ${player2Score}`, boardWidth / 2, 50);
 }
-
+//draws the paddles
 function drawPaddles() {
     ctx.fillStyle = "white";
     ctx.fillRect(player1Paddle.x, player1Paddle.y, player1Paddle.width, player1Paddle.height);
     ctx.fillRect(player2Paddle.x, player2Paddle.y, player2Paddle.width, player2Paddle.height);
+}
+// reset the position of the paddle when new game starts
+function resetPaddles(){
+    player1Paddle.x = 0,
+    player1Paddle.y =(boardHeight - 150) / 2,
+    player1Paddle.width = 30,
+    player1Paddle.height = 150,
+    player1Paddle.dy = 0
+
+    player2Paddle.x = boardWidth - 30
+    player2Paddle.y =(boardHeight - 150) / 2
+    player2Paddle.width = 30,
+    player2Paddle.height = 150,
+    player2Paddle.dy = 0
 }
 
 // dy is the vertical speed, is used with the setInterval to change where the paddle is positioned.
@@ -126,8 +155,8 @@ function resetBall() {
     ball.dx = 3 * (Math.random() > 0.5 ? 1 : -1); // returns a number 0 >= x < 1
     ball.dy = 3 * (Math.random() > 0.5 ? 1 : -1);
 }
-// changes the direction of the ball
 
+// changes the direction of the ball
 function moveBall() {
     if (!paused){
     ball.x += ball.dx;
@@ -156,12 +185,15 @@ function moveBall() {
     }
     }
 }
+
 //resets the game
 function resetGame() {
     player1Score = 0;
     player2Score = 0;
     resetBall();
+    resetPaddles();
 } 
+
 //draws the stripes going down the center of the board
 function drawCenterLines() {
     const stripeWidth = 10;
@@ -173,3 +205,10 @@ function drawCenterLines() {
         ctx.fillRect(center - stripeWidth / 2, i, stripeWidth, stripeWidth);
     }
 }
+
+ctx.fillStyle = "black"; 
+ctx.fillRect(0, 0, boardWidth, boardHeight);
+drawScore();
+drawPaddles();
+drawBall();
+drawCenterLines();
