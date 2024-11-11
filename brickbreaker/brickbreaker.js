@@ -171,13 +171,22 @@ function updateGame() {
     ball.x += ball.speedX;
     ball.y += ball.speedY;
 
+    // Check for ball hitting walls
     if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
         ball.speedX = -ball.speedX;
     }
     if (ball.y - ball.radius < 0) {
         ball.speedY = -ball.speedY;
-    } else if (ball.y + ball.radius > canvas.height) {
-        resetBall();
+    }
+
+    // Ball falls below canvas, reset the game
+    else if (ball.y + ball.radius > canvas.height) {
+        resetGame();  // Reset game if ball hits the bottom
+    }
+
+    // Ball hitting paddle
+    if (ball.y + ball.radius > canvas.height - paddleHeight - 10 && ball.x > paddleX && ball.x < paddleX + paddleWidth) {
+        ball.speedY = -ball.speedY;
     }
 
     collisionDetection();
