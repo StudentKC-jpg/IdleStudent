@@ -27,7 +27,12 @@
             font-size: 24px;
             margin: 10px 0;
         }
-        #pauseButton {
+        #controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        #pauseButton, #restartButton {
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
@@ -42,8 +47,11 @@
     <!-- Score Display -->
     <div id="score">Score: 0</div>
     
-    <!-- Pause Button -->
-    <button id="pauseButton">Pause</button>
+    <!-- Pause and Restart Buttons -->
+    <div id="controls">
+        <button id="pauseButton">Pause</button>
+        <button id="restartButton">Restart</button>
+    </div>
     
     <!-- JavaScript -->
     <script src="brickbreaker.js"></script>

@@ -8,19 +8,22 @@ const paddleHeight = 10;
 let paddleX = (canvas.width - paddleWidth) / 2;
 const paddleSpeed = 7;
 
-// Ball properties
+// Ball properties with adjustable speed factor
+const ballSpeedFactor = .6; // Adjust this factor to slow down the ball
+const initialBallSpeedX = 4 * ballSpeedFactor;
+const initialBallSpeedY = -4 * ballSpeedFactor;
 const ball = {
     x: canvas.width / 2,
     y: canvas.height - 30,
     radius: 10,
-    speedX: 4,
-    speedY: -4
+    speedX: initialBallSpeedX,
+    speedY: initialBallSpeedY
 };
 
 // Brick properties
 const brickRowCount = 5;
 const brickColumnCount = 10;
-const brickWidth = Math.floor(canvas.width / brickColumnCount) - 10; // Adjust brick width to fit
+const brickWidth = Math.floor(canvas.width / brickColumnCount) - 10;
 const brickHeight = 20;
 const brickPadding = 10;
 const brickOffsetTop = 30;
@@ -28,17 +31,26 @@ const brickOffsetLeft = 45;
 
 // Bricks array
 let bricks = [];
-for (let c = 0; c < brickColumnCount; c++) {
-    bricks[c] = [];
-    for (let r = 0; r < brickRowCount; r++) {
-        bricks[c][r] = { x: 0, y: 0, status: 1 };
+function createBricks() {
+    bricks = [];
+    for (let c = 0; c < brickColumnCount; c++) {
+        bricks[c] = [];
+        for (let r = 0; r < brickRowCount; r++) {
+            bricks[c][r] = { x: 0, y: 0, status: 1 };
+        }
     }
+}
+createBricks();
+
+// Score
+let score = 0;
+function updateScore() {
+    document.getElementById('score').innerText = 'Score: ' + score;
 }
 
 // Keyboard controls
 let rightPressed = false;
 let leftPressed = false;
-
 document.addEventListener('keydown', keyDownHandler, false);
 document.addEventListener('keyup', keyUpHandler, false);
 
@@ -58,7 +70,7 @@ function keyUpHandler(e) {
     }
 }
 
-// Draw the paddle
+// Draw functions
 function drawPaddle() {
     ctx.beginPath();
     ctx.rect(paddleX, canvas.height - paddleHeight - 10, paddleWidth, paddleHeight);
@@ -67,7 +79,6 @@ function drawPaddle() {
     ctx.closePath();
 }
 
-// Draw the ball
 function drawBall() {
     ctx.beginPath();
     ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
@@ -76,7 +87,6 @@ function drawBall() {
     ctx.closePath();
 }
 
-// Draw the bricks
 function drawBricks() {
     for (let c = 0; c < brickColumnCount; c++) {
         for (let r = 0; r < brickRowCount; r++) {
@@ -101,12 +111,7 @@ function collisionDetection() {
         for (let r = 0; r < brickRowCount; r++) {
             const b = bricks[c][r];
             if (b.status === 1) {
-                if (
-                    ball.x > b.x &&
-                    ball.x < b.x + brickWidth &&
-                    ball.y > b.y &&
-                    ball.y < b.y + brickHeight
-                ) {
+                if (ball.x > b.x && ball.x < b.x + brickWidth && ball.y > b.y && ball.y < b.y + brickHeight) {
                     ball.speedY = -ball.speedY;
                     b.status = 0;
                     score += 10;
@@ -117,69 +122,82 @@ function collisionDetection() {
     }
 }
 
-// Game logic
+// Reset ball
+function resetBall() {
+    ball.x = canvas.width / 2;
+    ball.y = canvas.height - 30;
+    ball.speedX = initialBallSpeedX;
+    ball.speedY = initialBallSpeedY;
+}
+
+// Reset game function
+function resetGame() {
+    ball.x = canvas.width / 2;
+    ball.y = canvas.height - 30;
+    ball.speedX = initialBallSpeedX;
+    ball.speedY = initialBallSpeedY;
+    paddleX = (canvas.width - paddleWidth) / 2;
+    score = 0;
+    updateScore();
+    createBricks();
+}
+
+// Restart Button event listener
+document.getElementById('restartButton').addEventListener('click', resetGame);
+
+// Pause game functionality
+let isPaused = false;
+document.getElementById('pauseButton').addEventListener('click', () => {
+    isPaused = !isPaused;
+    if (isPaused) {
+        cancelAnimationFrame(requestAnimationFrame(updateGame));
+        document.getElementById('pauseButton').textContent = 'Resume';
+    } else {
+        document.getElementById('pauseButton').textContent = 'Pause';
+        updateGame();  // Resume the game loop
+    }
+});
+
+// Game loop
 function updateGame() {
-    // Move the paddle
+    if (isPaused) return; // Pause the game loop if paused
+
     if (rightPressed && paddleX < canvas.width - paddleWidth) {
         paddleX += paddleSpeed;
     } else if (leftPressed && paddleX > 0) {
         paddleX -= paddleSpeed;
     }
 
-    // Move the ball
     ball.x += ball.speedX;
     ball.y += ball.speedY;
 
-    // Ball collision with walls
+    // Check for ball hitting walls
     if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
         ball.speedX = -ball.speedX;
     }
     if (ball.y - ball.radius < 0) {
         ball.speedY = -ball.speedY;
-    } else if (ball.y + ball.radius > canvas.height) {
-        document.location.reload(); // Game over, reload the page
     }
 
-    // Ball collision with the paddle
-    if (
-        ball.y + ball.radius > canvas.height - paddleHeight - 10 &&
-        ball.x > paddleX &&
-        ball.x < paddleX + paddleWidth
-    ) {
+    // Ball falls below canvas, reset the game
+    else if (ball.y + ball.radius > canvas.height) {
+        resetGame();  // Reset game if ball hits the bottom
+    }
+
+    // Ball hitting paddle
+    if (ball.y + ball.radius > canvas.height - paddleHeight - 10 && ball.x > paddleX && ball.x < paddleX + paddleWidth) {
         ball.speedY = -ball.speedY;
     }
 
     collisionDetection();
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawPaddle();
+    drawBall();
+    drawBricks();
+
+    requestAnimationFrame(updateGame);
 }
 
-// Drawing function
-function draw() {
-    if (!isPaused) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawBricks();
-        drawBall();
-        drawPaddle();
-        updateGame();
-    }
-    requestAnimationFrame(draw);
-}
-
-// Score display and update
-const scoreDisplay = document.getElementById("score");
-let score = 0;
-
-function updateScore() {
-    scoreDisplay.textContent = `Score: ${score}`;
-}
-
-// Pause functionality
-let isPaused = false;
-const pauseButton = document.getElementById('pauseButton');
-
-pauseButton.addEventListener('click', () => {
-    isPaused = !isPaused;
-    pauseButton.textContent = isPaused ? "Resume" : "Pause";
-});
-
-// Start the game
-draw();
+// Start the game loop
+updateGame();
