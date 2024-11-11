@@ -4,27 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brick Breaker Game</title>
-    <style>
-        #gameCanvas {
-            display: block;
-            margin: 0 auto;
-            background: #000;
-            border: 1px solid #fff;
-        }
-
-        #controlButtons {
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
-        }
-
-        #pauseButton, #restartButton {
-            display: inline-block;
-            margin: 0 10px;
-            padding: 5px 15px;
-            font-size: 16px;
-        }
-    </style>
 </head>
 <body>
 
@@ -201,7 +180,7 @@ function updateScore() {
 // Button events
 document.getElementById('pauseButton').addEventListener('click', () => {
     isPaused = !isPaused;
-    pauseButton.textContent = isPaused ? "Resume" : "Pause";
+    document.getElementById('pauseButton').textContent = isPaused ? "Resume" : "Pause";
 });
 document.getElementById('restartButton').addEventListener('click', resetGame);
 
