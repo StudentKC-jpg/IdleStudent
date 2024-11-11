@@ -9,7 +9,7 @@ let paddleX = (canvas.width - paddleWidth) / 2;
 const paddleSpeed = 7;
 
 // Ball properties with adjustable speed factor
-const ballSpeedFactor = 0.9; // Adjust this factor to slow down the ball
+const ballSpeedFactor = 1.2; // Adjust this factor to slow down the ball
 const initialBallSpeedX = 4 * ballSpeedFactor;
 const initialBallSpeedY = -4 * ballSpeedFactor;
 const ball = {
