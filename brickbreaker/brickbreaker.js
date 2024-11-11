@@ -8,13 +8,14 @@ const paddleHeight = 10;
 let paddleX = (canvas.width - paddleWidth) / 2;
 const paddleSpeed = 7;
 
-// Ball properties
+// Ball properties with adjustable speed factor
+const ballSpeedFactor = 0.5; // Adjust this factor to slow down the ball
 const ball = {
     x: canvas.width / 2,
     y: canvas.height - 30,
     radius: 10,
-    speedX: 4,
-    speedY: -4
+    speedX: 4 * ballSpeedFactor,
+    speedY: -4 * ballSpeedFactor
 };
 
 // Brick properties
