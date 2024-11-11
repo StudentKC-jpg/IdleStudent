@@ -17,11 +17,14 @@
             <div id = "instructions">Instructions: <br> Up = ArrowUp <br> Left = ArrowLeft <br> Right = ArrowRight <br> Down = ArrowDown  </div>
             <div id="board"></div>
             <div id = "HowTo">Welcome to 2048. <br> The object of the game is to make a 2048 tile. You can combine same number tiles on the same line, horizonally or vertically. Easy enough right.</div>
-            <div id="popUp">
-                Game Over!
-                <div id="newGame">New Game</div>
+            <div class="popUp" id="loser" style="display: none;">
+                <div class="popup-content">
+                    <h2 class="glowing">You Lost</h2>
+                    <p>No more moves possible. Click New Game to Restart</p>
+                    <button id="newGame">New Game</button>
+                </div>
             </div> 
-            <div id="winner" style="display: none;">
+            <div class="popUp" id="winner" style="display: none;">
                 <div class="popup-content">
                     <h2 class="glowing">Congrats, 2048!!!</h2>
                     <p>You created a 2048 tile. Click close to continue</p>

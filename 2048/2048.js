@@ -1,4 +1,4 @@
-// todo MAKE LOOK MORE LIKE ACTUAL 2048
+// todo
 /**  
  * in win message how many moves it took you to get 2048
  * an undo button MAYBE
@@ -42,7 +42,7 @@ function setGame(){
 
         //test win condition
         // [1024, 1024, 0, 0],
-        // [0, 0, 0, 0],
+        // [512, 512, 512, 512],
         // [0, 0, 0, 0],
         // [0, 0, 0, 0]
 
@@ -265,6 +265,7 @@ function slide(row) {
         winGame();
     }
 
+
     return row;
 }
 
@@ -362,11 +363,10 @@ function gameOver(){
         localStorage.setItem("highscore", highscore);
     }
 
-    document.getElementById("popUp").style.display = "block";
-    document.getElementById("newGame").style.display = "block";
+    document.getElementById("loser").style.display = "flex"; // Show the pop-up
     document.getElementById("newGame").addEventListener("click", e =>{
         
-        document.getElementById("popUp").style.display = "none";
+        document.getElementById("loser").style.display = "none";
         document.getElementById("newGame").style.display = "none";
         restartGame();
         updateHighscore();
@@ -379,10 +379,10 @@ function gameOver(){
 
 // create 2048
 function winGame(){
-    document.getElementById("winner").style.display = "flex"; // Show the pop-up
+    document.getElementById("winner").style.display = "flex"; 
 }
 
 // Close button functionality
 document.getElementById("closePopup").addEventListener("click", function() {
-    document.getElementById("winner").style.display = "none"; // Hide the pop-up
+    document.getElementById("winner").style.display = "none"; 
 });

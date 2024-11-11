@@ -42,36 +42,8 @@ hr{
     left: 35px;
 }
 
-#popUp{
-    display: none;
-    background-color: #f4b17a; /* Semi-transparent background */
-    margin: 0 auto;
-    position: absolute;
-    top: 40%;
-    right: 55px;
-    left: 55px;
-    width: 250px;
-    height: 85px;
-    font-size: 40px;
-    text-align: center;
 
-}
-
-#newGame{
-    display: none; /* hidden */
-    background-color: #eec744; /* Semi-transparent background */
-    margin: 0 auto;
-    position: absolute;
-    right: 55px;
-    left: 0px;
-    width: 250px;
-    height: 50px; /* Adjust height as needed */
-    font-size: 30px; /* Change font size as needed */
-    text-align: center;
-}
-
-
-#winner {
+.popUp {
     position: fixed;
     top: 0;
     left: 0;
