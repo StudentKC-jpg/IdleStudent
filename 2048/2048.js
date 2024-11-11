@@ -1,4 +1,4 @@
-// todo
+// todo MAKE LOOK MORE LIKE ACTUAL 2048
 /**  
  * in win message how many moves it took you to get 2048
  * an undo button MAYBE
